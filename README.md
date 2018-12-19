@@ -13,3 +13,9 @@ Pair Challenge with [John](https://twitter.com/JohnEstropia)
 ## Radar View
 
 ![](RadarView/radar-view.gif)
+
+# Text and Animation
+
+Pair Fun with [John](https://twitter.com/JohnEstropia)
+
+![](TextEmitterAnimation/text-emitter.gif)
