@@ -1,6 +1,6 @@
 //
-//  TwitterFavoriteButton.swift
-//  TwitterFavoriteButton
+//  FavoriteButton.swift
+//  FavoriteButton
 //
 //  Created by Aymen Rebouh on 2018/12/14.
 //  Copyright © 2018 Aymen Rebouh. All rights reserved.
@@ -12,7 +12,8 @@ struct SmallCircleConfiguration {
     let startColor: UIColor
     let endColor: UIColor
 }
-class TwitterFavoriteButton: UIButton {
+
+class FavoriteButton: UIButton {
     
     // MARK: Properties
     
@@ -57,19 +58,21 @@ class TwitterFavoriteButton: UIButton {
     // MARK: Setup
     
     private func setup() {
+        self.isSelected = false
+        
         layout: do {
             setupSmallCircles()
             layer.addSublayer(circleLayer)
             layer.addSublayer(heartImage)
             heartImage.contents = UIImage(named: "like")?.cgImage
 
-            positionnateSmallCirclesPoints(numberOfPoints: smallCirclesLayers.count, radius: layer.bounds.width/7.0, center: CGPoint(x: layer.bounds.width/2.0 - smallCircleSize.width, y: layer.bounds.width/2.0 - smallCircleSize.height))
+            print("circlelayer bounds = \(circleLayer.bounds)")
+            positionnateSmallCirclesPoints(numberOfPoints: smallCirclesLayers.count, radius: layer.bounds.width/7.0, center: CGPoint(x: layer.bounds.width/2.0 - smallCircleSize.width/2.0, y: layer.bounds.width/2.0 - smallCircleSize.height/2.0))
         }
         
         UI: do {
             circleLayer.fillColor = nil
             circleLayer.opacity = 0
-            print(bounds.width)
             circleLayer.borderWidth = bounds.width/4.0
             circleLayer.borderColor = #colorLiteral(red: 0.8196078431, green: 0.3019607843, blue: 0.5176470588, alpha: 1).cgColor
         }
@@ -88,7 +91,45 @@ class TwitterFavoriteButton: UIButton {
     // MARK: Animation
     
     func animate() {
-        animationFirstStep()
+        if self.isSelected {
+            self.isSelected = false
+            backToNormal()
+        } else {
+            self.isSelected = true
+            animationFirstStep()
+        }
+    }
+    
+    func backToNormal() {
+        makeHeartBiggerAndBounce: do {
+            let contentAnimation = CABasicAnimation(keyPath: "contents")
+            contentAnimation.fromValue = self.heartImage.contents
+            contentAnimation.toValue = UIImage(named: "like")?.cgImage
+            contentAnimation.duration = 0.05
+            contentAnimation.fillMode = .forwards
+            contentAnimation.isRemovedOnCompletion = false
+            self.heartImage.add(contentAnimation, forKey: "contentAnimation")
+            
+            let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+            scaleAnimation.fromValue = 1
+            scaleAnimation.toValue = 1.5
+            scaleAnimation.fillMode = .forwards
+            scaleAnimation.isRemovedOnCompletion = false
+            scaleAnimation.duration = 0.15
+            scaleAnimation.timingFunction = CAMediaTimingFunction(name: .easeIn)
+            scaleAnimation.beginTime = CACurrentMediaTime() + contentAnimation.duration
+            self.heartImage.add(scaleAnimation, forKey: "scaleAnimation")
+            
+            let scaleAnimation2 = CABasicAnimation(keyPath: "transform.scale")
+            scaleAnimation2.fromValue = 1.5
+            scaleAnimation2.toValue = 1
+            scaleAnimation2.fillMode = .forwards
+            scaleAnimation2.isRemovedOnCompletion = false
+            scaleAnimation2.beginTime =  CACurrentMediaTime() + scaleAnimation.duration + contentAnimation.duration
+            scaleAnimation2.timingFunction = CAMediaTimingFunction(name: .easeOut)
+            scaleAnimation2.duration = 0.15
+            self.heartImage.add(scaleAnimation2, forKey: "scaleAnimation2")
+        }
     }
     
     func animationFirstStep() {
@@ -106,8 +147,8 @@ class TwitterFavoriteButton: UIButton {
             totalDuration += heartScaleAnimation.duration
         }
         
-        let circleOpacityAnimation = CABasicAnimation(keyPath: "opacity")
         showCircle: do {
+            let circleOpacityAnimation = CABasicAnimation(keyPath: "opacity")
             circleOpacityAnimation.fromValue = 0
             circleOpacityAnimation.toValue = 1
             circleOpacityAnimation.duration = 0.05
@@ -115,11 +156,12 @@ class TwitterFavoriteButton: UIButton {
             circleOpacityAnimation.isRemovedOnCompletion = false
             circleOpacityAnimation.beginTime = CACurrentMediaTime() + totalDuration
             totalDuration += circleOpacityAnimation.duration
-            circleLayer.add(circleOpacityAnimation, forKey: "opacityAnimation")
+            circleLayer.add(circleOpacityAnimation, forKey: "circleOpacityAnimation")
         }
         
-        let circleGroupAnimation = CAAnimationGroup()
-        makeCircleBigger: do {
+        changeCircleSizeAndolor: do {
+            let changeCircleSizeColorGroupAnimation = CAAnimationGroup()
+            
             let circleScaleAnimation = CABasicAnimation(keyPath: "transform.scale")
             circleScaleAnimation.fromValue = 1
             circleScaleAnimation.toValue = 2
@@ -128,13 +170,14 @@ class TwitterFavoriteButton: UIButton {
             circleColorAnimation.fromValue = #colorLiteral(red: 0.8274509804, green: 0.2431372549, blue: 0.4196078431, alpha: 1).cgColor
             circleColorAnimation.toValue = #colorLiteral(red: 0.7803921569, green: 0.6392156863, blue: 0.8941176471, alpha: 1).cgColor
             
-            circleGroupAnimation.animations = [circleScaleAnimation, circleColorAnimation]
-            circleGroupAnimation.duration = 0.1
-            circleGroupAnimation.fillMode = .forwards
-            circleGroupAnimation.isRemovedOnCompletion = false
-            circleGroupAnimation.beginTime = CACurrentMediaTime() + totalDuration
-            totalDuration += circleGroupAnimation.duration
-            circleLayer.add(circleGroupAnimation, forKey: "circleGroupAnimation")
+            changeCircleSizeColorGroupAnimation.animations = [circleScaleAnimation, circleColorAnimation]
+            changeCircleSizeColorGroupAnimation.duration = 0.1
+            changeCircleSizeColorGroupAnimation.fillMode = .forwards
+            changeCircleSizeColorGroupAnimation.isRemovedOnCompletion = false
+            changeCircleSizeColorGroupAnimation.beginTime = CACurrentMediaTime() + totalDuration
+            totalDuration += changeCircleSizeColorGroupAnimation.duration
+            
+            circleLayer.add(changeCircleSizeColorGroupAnimation, forKey: "changeCircleSizeColorGroupAnimation")
         }
 
         let borderWidthAnimation = CABasicAnimation(keyPath: "borderWidth")
@@ -149,6 +192,8 @@ class TwitterFavoriteButton: UIButton {
             circleLayer.add(borderWidthAnimation, forKey: "borderWidthAnimation")
         }
         
+        totalDurationForThin = totalDuration - (borderWidthAnimation.duration/2)
+
         makeHeartBiggerAndBounce: do {
             let contentAnimation = CABasicAnimation(keyPath: "contents")
             contentAnimation.fromValue = self.heartImage.contents
@@ -156,7 +201,7 @@ class TwitterFavoriteButton: UIButton {
             contentAnimation.duration = 0.05
             contentAnimation.fillMode = .forwards
             contentAnimation.isRemovedOnCompletion = false
-            contentAnimation.beginTime = CACurrentMediaTime() + totalDuration - (borderWidthAnimation.duration/2)
+            contentAnimation.beginTime = CACurrentMediaTime() + totalDurationForThin
             totalDurationForThin = totalDuration - (borderWidthAnimation.duration/2)
             totalDuration += contentAnimation.duration - (borderWidthAnimation.duration/2)
             self.heartImage.add(contentAnimation, forKey: "contentAnimation")
@@ -166,10 +211,9 @@ class TwitterFavoriteButton: UIButton {
             scaleAnimation.toValue = 1.2
             scaleAnimation.fillMode = .forwards
             scaleAnimation.isRemovedOnCompletion = false
-            scaleAnimation.duration = 0.7
+            scaleAnimation.duration = 0.15
             scaleAnimation.timingFunction = CAMediaTimingFunction(name: .easeIn)
-            scaleAnimation.beginTime = CACurrentMediaTime() + totalDuration
-            totalDuration += scaleAnimation.duration
+            scaleAnimation.beginTime = CACurrentMediaTime() + totalDurationForThin
             self.heartImage.add(scaleAnimation, forKey: "scaleAnimation")
     
             let scaleAnimation2 = CABasicAnimation(keyPath: "transform.scale")
@@ -177,56 +221,57 @@ class TwitterFavoriteButton: UIButton {
             scaleAnimation2.toValue = 1
             scaleAnimation2.fillMode = .forwards
             scaleAnimation2.isRemovedOnCompletion = false
-            scaleAnimation2.beginTime =  CACurrentMediaTime() + totalDuration
+            scaleAnimation2.beginTime =  CACurrentMediaTime() + totalDurationForThin + scaleAnimation.duration
             scaleAnimation2.timingFunction = CAMediaTimingFunction(name: .easeOut)
-            scaleAnimation2.duration = 0.3
+            scaleAnimation2.duration = 0.05
             totalDuration += scaleAnimation2.duration
             self.heartImage.add(scaleAnimation2, forKey: "scaleAnimation2")
         }
         
-        for (i, smallCircleLayer) in smallCirclesLayers.enumerated() {
-            let opacityAnimation = CABasicAnimation(keyPath: "opacity")
-            opacityAnimation.fromValue = 0
-            opacityAnimation.toValue = 1
-            opacityAnimation.duration = 0.1
-            opacityAnimation.fillMode = .forwards
-            opacityAnimation.isRemovedOnCompletion = false
-            opacityAnimation.beginTime = CACurrentMediaTime() + totalDurationForThin
-            totalDurationForThin += opacityAnimation.duration
-            smallCircleLayer.add(opacityAnimation, forKey: "opacityAnimation")
-            
-            let circleScaleAnimation = CABasicAnimation(keyPath: "transform.scale")
-            circleScaleAnimation.fromValue = 1
-            circleScaleAnimation.toValue = 0
-
-            let circleColorAnimation = CABasicAnimation(keyPath: "borderColor")
-            circleColorAnimation.fromValue = smallCirclesConfigurations[i].startColor.cgColor
-            circleColorAnimation.toValue = smallCirclesConfigurations[i].endColor.cgColor
-
-            let positionAnimation = CABasicAnimation(keyPath: "position")
-            positionAnimation.fromValue = smallCircleLayer.position
-            positionAnimation.toValue = positionForSmallCircle(atIndex: i, radius: layer.bounds.width, center:  CGPoint(x: layer.bounds.width/2.0 - smallCircleSize.width, y: layer.bounds.width/2.0 - smallCircleSize.height))
-
-            let circleGroupAnimation = CAAnimationGroup()
-            circleGroupAnimation.animations = [circleScaleAnimation, circleColorAnimation, positionAnimation]
-            circleGroupAnimation.duration = 1
-            circleGroupAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
-            circleGroupAnimation.fillMode = .forwards
-            circleGroupAnimation.isRemovedOnCompletion = false
-            circleGroupAnimation.beginTime = CACurrentMediaTime() + totalDurationForThin
-
-            smallCircleLayer.add(circleGroupAnimation, forKey: "smallCircleLayer")
+        animateSmallCircles: do {
+            for (i, smallCircleLayer) in smallCirclesLayers.enumerated() {
+                let smallCircleOpacityAnimation = CABasicAnimation(keyPath: "opacity")
+                smallCircleOpacityAnimation.fromValue = 0
+                smallCircleOpacityAnimation.toValue = 1
+                smallCircleOpacityAnimation.duration = 0.1
+                smallCircleOpacityAnimation.fillMode = .forwards
+                smallCircleOpacityAnimation.isRemovedOnCompletion = false
+                smallCircleOpacityAnimation.beginTime = CACurrentMediaTime() + totalDurationForThin
+                smallCircleLayer.add(smallCircleOpacityAnimation, forKey: "smallCircleOpacityAnimation")
+                
+                let smallCircleScaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+                smallCircleScaleAnimation.fromValue = 1
+                smallCircleScaleAnimation.toValue = 0
+                
+                let smallCircleColorAnimation = CABasicAnimation(keyPath: "borderColor")
+                smallCircleColorAnimation.fromValue = smallCirclesConfigurations[i].startColor.cgColor
+                smallCircleColorAnimation.toValue = smallCirclesConfigurations[i].endColor.cgColor
+                
+                let smallCirclePositionAnimation = CABasicAnimation(keyPath: "position")
+                smallCirclePositionAnimation.fromValue = smallCircleLayer.position
+                smallCirclePositionAnimation.toValue = positionForSmallCircle(atIndex: i, radius: layer.bounds.width * 1.2, center:  CGPoint(x: layer.bounds.width/2.0 - smallCircleSize.width/2.0, y: layer.bounds.width/2.0 - smallCircleSize.height/2.0))
+                
+                let smallCirclGroupAnimation = CAAnimationGroup()
+                smallCirclGroupAnimation.animations = [smallCircleScaleAnimation, smallCircleColorAnimation, smallCirclePositionAnimation]
+                smallCirclGroupAnimation.duration = 1
+                smallCirclGroupAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+                smallCirclGroupAnimation.fillMode = .forwards
+                smallCirclGroupAnimation.isRemovedOnCompletion = false
+                smallCirclGroupAnimation.beginTime = CACurrentMediaTime() + totalDurationForThin
+                
+                smallCircleLayer.add(smallCirclGroupAnimation, forKey: "smallCirclGroupAnimation")
+            }
         }
     }
     
     // MARK: Setup
     
     func setupSmallCircles() {
-        for i in 0..<smallCirclesConfigurations.count {
+        for smallCircleConfiguration in smallCirclesConfigurations {
             let circle = CAShapeLayer()
             circle.opacity = 0
             circle.fillColor = nil
-            circle.borderColor = smallCirclesConfigurations[i].startColor.cgColor
+            circle.borderColor = smallCircleConfiguration.startColor.cgColor
             circle.borderWidth = 10
             layer.addSublayer(circle)
             smallCirclesLayers.append(circle)

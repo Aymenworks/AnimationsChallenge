@@ -12,7 +12,7 @@
 		5A7E50CC21C32B98000EF674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A7E50CA21C32B98000EF674 /* Main.storyboard */; };
 		5A7E50CE21C32B98000EF674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A7E50CD21C32B98000EF674 /* Assets.xcassets */; };
 		5A7E50D121C32B98000EF674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A7E50CF21C32B98000EF674 /* LaunchScreen.storyboard */; };
-		5A7E50D921C32C21000EF674 /* TwitterFavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7E50D821C32C21000EF674 /* TwitterFavoriteButton.swift */; };
+		5A7E50D921C32C21000EF674 /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7E50D821C32C21000EF674 /* FavoriteButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		5A7E50CD21C32B98000EF674 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A7E50D021C32B98000EF674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5A7E50D221C32B98000EF674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5A7E50D821C32C21000EF674 /* TwitterFavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterFavoriteButton.swift; sourceTree = "<group>"; };
+		5A7E50D821C32C21000EF674 /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +62,7 @@
 				5A7E50CD21C32B98000EF674 /* Assets.xcassets */,
 				5A7E50CF21C32B98000EF674 /* LaunchScreen.storyboard */,
 				5A7E50D221C32B98000EF674 /* Info.plist */,
-				5A7E50D821C32C21000EF674 /* TwitterFavoriteButton.swift */,
+				5A7E50D821C32C21000EF674 /* FavoriteButton.swift */,
 			);
 			path = TwitterFavoriteButton;
 			sourceTree = "<group>";
@@ -138,7 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A7E50D921C32C21000EF674 /* TwitterFavoriteButton.swift in Sources */,
+				5A7E50D921C32C21000EF674 /* FavoriteButton.swift in Sources */,
 				5A7E50C921C32B98000EF674 /* ViewController.swift in Sources */,
 				5A7E50C721C32B98000EF674 /* AppDelegate.swift in Sources */,
 			);

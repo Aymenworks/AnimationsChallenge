@@ -17,11 +17,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o5G-il-3cI" customClass="TwitterFavoriteButton" customModule="TwitterFavoriteButton" customModuleProvider="target">
-                                <rect key="frame" x="167.5" y="313.5" width="40" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o5G-il-3cI" customClass="FavoriteButton" customModule="TwitterFavoriteButton" customModuleProvider="target">
+                                <rect key="frame" x="173.5" y="319.5" width="28" height="28"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="eiB-zi-iZc"/>
+                                    <constraint firstAttribute="width" constant="28" id="eiB-zi-iZc"/>
                                     <constraint firstAttribute="width" secondItem="o5G-il-3cI" secondAttribute="height" multiplier="1:1" id="uPx-na-eE6"/>
                                 </constraints>
                             </button>
