@@ -35,10 +35,15 @@ class ViewController: UIViewController {
         switch gesture.state {
             
         case .changed:
-//            let progress =
             print("size: \(contentOffsetRange), offset: \(translationY)")
             let constant = self.scrubberViewTopConstraint.constant + translationY
+            
+            var progressScrubber = (scrubberOffsetRange.lowerBound + constant) / scrubberOffsetRange.upperBound
+            progressScrubber = (progressScrubber...progressScrubber).clamped(to: 0...1)
+            
+            print("progress  = \(progressScrubber)")
             self.scrubberViewTopConstraint.constant = (constant ... constant).clamped(to: scrubberOffsetRange).lowerBound
+            
             gesture.setTranslation(.zero, in: gesture.view!)
             
         default: break
