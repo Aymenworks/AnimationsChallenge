@@ -27,24 +27,29 @@ class ViewController: UIViewController {
         
         let translationY = gesture.translation(in: gesture.view!).y
 
-        let contentInset = self.collectionView.contentInset
-        let contentSize = self.collectionView.contentSize
-        let scrubberOffsetRange = 0 ... self.collectionView.frame.height - scrubberView.frame.height
-        let contentOffsetRange = contentInset.top ..< contentInset.top + contentSize.height
+        let contentInset = collectionView.contentInset
+        let contentSize = collectionView.contentSize
+        let scrubberOffsetRange = collectionView.scrollIndicatorInsets.top ... (collectionView.frame.height - scrubberView.frame.height - collectionView.scrollIndicatorInsets.bottom)
+        let contentOffsetRange = contentInset.top ..< contentSize.height
 
         switch gesture.state {
             
         case .changed:
-            print("size: \(contentOffsetRange), offset: \(translationY)")
+            // Update scrubber
             let constant = self.scrubberViewTopConstraint.constant + translationY
-            
-            var progressScrubber = (scrubberOffsetRange.lowerBound + constant) / scrubberOffsetRange.upperBound
-            progressScrubber = (progressScrubber...progressScrubber).clamped(to: 0...1)
-            
-            print("progress  = \(progressScrubber)")
             self.scrubberViewTopConstraint.constant = (constant ... constant).clamped(to: scrubberOffsetRange).lowerBound
-            
             gesture.setTranslation(.zero, in: gesture.view!)
+
+            // Update collectionView
+            let scrubberProgress = (constant - scrubberOffsetRange.lowerBound)
+                / (scrubberOffsetRange.upperBound - scrubberOffsetRange.lowerBound)
+
+            let scrubberClampedProgress = (scrubberProgress ... scrubberProgress).clamped(to: 0 ... 1).lowerBound
+            let targetOffsetY = contentOffsetRange.lowerBound
+                + (scrubberClampedProgress * (contentOffsetRange.upperBound - contentOffsetRange.lowerBound))
+            collectionView.contentOffset.y = targetOffsetY
+
+            print("clampedProgress: \(scrubberClampedProgress), offsetY: \(targetOffsetY)")
             
         default: break
         }
