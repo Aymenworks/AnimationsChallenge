@@ -25,13 +25,21 @@ class ViewController: UIViewController {
     
     @objc private func handleGesture(gesture: UIPanGestureRecognizer) {
         
-        let gestureY = gesture.translation(in: view).y
-        
+        let translationY = gesture.translation(in: gesture.view!).y
+
+        let contentInset = self.collectionView.contentInset
+        let contentSize = self.collectionView.contentSize
+        let scrubberOffsetRange = 0 ... self.collectionView.frame.height - scrubberView.frame.height
+        let contentOffsetRange = contentInset.top ..< contentInset.top + contentSize.height
+
         switch gesture.state {
             
         case .changed:
-            let progress =
-            print("moved to \(gestureY), progress = ")
+//            let progress =
+            print("size: \(contentOffsetRange), offset: \(translationY)")
+            let constant = self.scrubberViewTopConstraint.constant + translationY
+            self.scrubberViewTopConstraint.constant = (constant ... constant).clamped(to: scrubberOffsetRange).lowerBound
+            gesture.setTranslation(.zero, in: gesture.view!)
             
         default: break
         }
