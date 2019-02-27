@@ -18,7 +18,7 @@ class ProgressContainerView: UIStackView {
     //  Current item index
     var currentIndex = 0
     
-    init(numberOfItems: Int) {
+    init(numberOfItems: Int, animationDuration: TimeInterval) {
 
         super.init(frame: .zero)
         
@@ -31,7 +31,7 @@ class ProgressContainerView: UIStackView {
         
         setupItems: do {
             for _ in 0..<numberOfItems {
-                self.addArrangedSubview(ItemView())
+                self.addArrangedSubview(ItemView(animationDuration: animationDuration))
             }
         }
     }
@@ -82,10 +82,21 @@ class ItemView: UIView {
         super.init(frame: .zero)
 
         setupLayers: do {
-            backgroundLayer.fillColor = UIColor.black.withAlphaComponent(0.5).cgColor
-            foregroundLayer.fillColor = UIColor.white.cgColor
-            foregroundLayer.strokeEnd = 0
-            
+
+            backgroundLayer.strokeColor = UIColor.black.withAlphaComponent(0.5).cgColor
+            foregroundLayer.strokeColor = UIColor.white.cgColor
+//            backgroundLayer.fillColor = UIColor.black.withAlphaComponent(0.5).cgColor
+//            foregroundLayer.fillColor = UIColor.white.cgColor
+
+//            backgroundLayer.lineWidth = 2
+//            foregroundLayer.lineWidth = 2
+
+            backgroundLayer.strokeStart = 0
+            backgroundLayer.strokeEnd = 1
+
+            foregroundLayer.strokeStart = 0
+            foregroundLayer.strokeEnd = 0.5
+
             layer.addSublayer(backgroundLayer)
             layer.addSublayer(foregroundLayer)
         }
@@ -93,6 +104,15 @@ class ItemView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+
+        backgroundLayer.path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.bounds.height / 2).cgPath
+        foregroundLayer.path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.bounds.height / 2).cgPath
+
+        print(layer.bounds)
     }
 
     func start() {
@@ -115,7 +135,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let progressView = ProgressContainerView(numberOfItems: 10)
+        let progressView = ProgressContainerView(numberOfItems: 10, animationDuration: 1)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progressView)
         
