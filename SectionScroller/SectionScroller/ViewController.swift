@@ -49,7 +49,7 @@ class ViewController: UIViewController {
                 + (scrubberClampedProgress * (contentOffsetRange.upperBound - contentOffsetRange.lowerBound))
             collectionView.contentOffset.y = targetOffsetY
 
-            print("clampedProgress: \(scrubberClampedProgress), offsetY: \(targetOffsetY)")
+            print("clampedProgress: \(scrubberClampedProgress), offsetY: \(targetOffsetY),  contentSize = \(contentSize.height)")
             
         default: break
         }
