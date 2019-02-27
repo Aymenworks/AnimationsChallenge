@@ -15,6 +15,8 @@ class ProgressContainerView: UIStackView {
         return self.arrangedSubviews.count
     }
 
+    var isPaused: Bool = false
+
     //  Current item index
     var currentIndex: Int = 0
 
@@ -53,14 +55,15 @@ class ProgressContainerView: UIStackView {
         (arrangedSubviews[currentIndex] as? ItemView)?.start()
     }
 
-    func stop() {
-        (arrangedSubviews[currentIndex] as? ItemView)?.stop()
+    func toggle() {
+        if isPaused {
+            (arrangedSubviews[currentIndex] as? ItemView)?.resume()
+        } else {
+            (arrangedSubviews[currentIndex] as? ItemView)?.pause()
+        }
+        isPaused = !isPaused
     }
 
-    func resume() {
-        (arrangedSubviews[currentIndex] as? ItemView)?.resume()
-
-    }
 
     func next() {
         // We reach the end
@@ -93,7 +96,7 @@ class ItemView: UIView {
     // Duration for each bar item
     let animationDuration: TimeInterval
     var completionHandler: (() -> ())?
-    
+
     init(animationDuration: TimeInterval, completionHandler: @escaping () -> ()) {
 
         self.animationDuration = animationDuration
@@ -137,12 +140,21 @@ class ItemView: UIView {
         foregroundLayer.add(animation, forKey: "animation")
     }
 
-    func stop() {
+    func pause() {
 
+        let pausedTime = foregroundLayer.convertTime(CACurrentMediaTime(), from: nil)
+        foregroundLayer.speed = 0.0
+        foregroundLayer.timeOffset = pausedTime
     }
 
     func resume() {
 
+        let pausedTime = foregroundLayer.timeOffset
+        foregroundLayer.speed = 1.0
+        foregroundLayer.timeOffset = 0.0
+        foregroundLayer.beginTime = 0.0
+        let timeSincePause =  foregroundLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        foregroundLayer.beginTime = timeSincePause
     }
 }
 
@@ -178,4 +190,10 @@ class ViewController: UIViewController {
 
         progressView.start()
     }
+
+    @IBAction func pause(_ sender: Any) {
+
+        progressView.toggle()
+    }
+
 }
