@@ -11,28 +11,39 @@ import UIKit
 
 class ProgressContainerView: UIStackView {
 
-    let numberOfItems: Int
+    var numberOfItems: Int  {
+        return self.arrangedSubviews.count
+    }
 
-    private let items: [ItemView]
-
-    let animationDuration: Float = 1
-
+    //  Current item index
+    var currentIndex = 0
+    
     init(numberOfItems: Int) {
 
-        self.numberOfItems = numberOfItems
-
-        items = (0..<numberOfItems).map { _ in
-            ItemView()
-        }
-
         super.init(frame: .zero)
-
+        
+        setupStackView: do {
+            self.axis = .horizontal
+            self.spacing = 5
+            self.distribution = .fillEqually
+            self.alignment = .fill
+        }
+        
+        setupItems: do {
+            for _ in 0..<numberOfItems {
+                self.addArrangedSubview(ItemView())
+            }
+        }
     }
 
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    private func setup() {
+        
+    }
+    
     func start() {
 
     }
@@ -59,9 +70,25 @@ class ItemView: UIView {
 
     private var progress: Float = 0
 
-    init() {
+    let foregroundLayer = CAShapeLayer()
+    let backgroundLayer = CAShapeLayer()
+    
+    // Duration for each bar item
+    let animationDuration: TimeInterval
+    
+    init(animationDuration: TimeInterval = 5) {
+        self.animationDuration = animationDuration
 
         super.init(frame: .zero)
+
+        setupLayers: do {
+            backgroundLayer.fillColor = UIColor.black.withAlphaComponent(0.5).cgColor
+            foregroundLayer.fillColor = UIColor.white.cgColor
+            foregroundLayer.strokeEnd = 0
+            
+            layer.addSublayer(backgroundLayer)
+            layer.addSublayer(foregroundLayer)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -73,7 +100,7 @@ class ItemView: UIView {
     }
 
     func stop() {
-
+    
     }
 
     func resume() {
@@ -89,7 +116,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         let progressView = ProgressContainerView(numberOfItems: 10)
-        
+        progressView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progressView)
+        
+        NSLayoutConstraint.activate([
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
+            progressView.heightAnchor.constraint(equalToConstant: 4)
+        ])
     }
 }
