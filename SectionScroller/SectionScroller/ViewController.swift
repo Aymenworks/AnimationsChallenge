@@ -11,6 +11,31 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var scrubberView: UIView!
+    @IBOutlet weak var scrubberViewTopConstraint: NSLayoutConstraint!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        gestures: do {
+            let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleGesture(gesture:)))
+            scrubberView.addGestureRecognizer(panGesture)
+        }
+    }
+    
+    @objc private func handleGesture(gesture: UIPanGestureRecognizer) {
+        
+        let gestureY = gesture.translation(in: view).y
+        
+        switch gesture.state {
+            
+        case .changed:
+            let progress =
+            print("moved to \(gestureY), progress = ")
+            
+        default: break
+        }
+    }
 }
 
 extension ViewController:  UICollectionViewDataSource {
