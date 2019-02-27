@@ -18,7 +18,7 @@ class ProgressContainerView: UIStackView {
     //  Current item index
     var currentIndex: Int = 0
 
-    init(numberOfItems: Int, animationDuration: TimeInterval) {
+    init(numberOfItems: Int, animationDuration: TimeInterval = 5) {
 
         super.init(frame: .zero)
         
@@ -63,11 +63,22 @@ class ProgressContainerView: UIStackView {
     }
 
     func next() {
+        // We reach the end
+        if currentIndex == arrangedSubviews.count-1 {
+            print("finish")
+            return
+        }
+        
         currentIndex += 1
         start()
     }
 
     func previous() {
+        // It's the first item, so cannot go before
+        if currentIndex == 0 {
+            return
+        }
+        
         currentIndex -= 1
         start()
     }
@@ -76,30 +87,26 @@ class ProgressContainerView: UIStackView {
 
 class ItemView: UIView {
 
-    enum State {
-        case empty, progress, completed
-    }
-
-    private var progress: Float = 0
-
     let foregroundLayer = CAShapeLayer()
     let backgroundLayer = CAShapeLayer()
     
     // Duration for each bar item
     let animationDuration: TimeInterval
+    var completionHandler: (() -> ())?
     
-    init(animationDuration: TimeInterval = 5, completionHandler: () -> ()) {
+    init(animationDuration: TimeInterval, completionHandler: @escaping () -> ()) {
 
         self.animationDuration = animationDuration
-
+        self.completionHandler = completionHandler
+        
         super.init(frame: .zero)
 
         setupLayers: do {
 
             backgroundColor = .clear
 
-            backgroundLayer.fillColor = UIColor.red.cgColor
-            foregroundLayer.fillColor = UIColor.yellow.cgColor
+            backgroundLayer.fillColor = UIColor.black.withAlphaComponent(0.4).cgColor
+            foregroundLayer.fillColor = UIColor.white.cgColor
 
             layer.addSublayer(backgroundLayer)
             layer.addSublayer(foregroundLayer)
@@ -115,16 +122,18 @@ class ItemView: UIView {
         
         backgroundLayer.path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.bounds.height/2.0).cgPath
         
-        let progress:  CGFloat = 0.1
-        foregroundLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: layer.bounds.width * progress, height: layer.bounds.height), cornerRadius: layer.bounds.height/2.0).cgPath
+        foregroundLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 0, height: layer.bounds.height), cornerRadius: layer.bounds.height/2.0).cgPath
         
     }
 
-    let animation = CABasicAnimation(keyPath: "path")
 
     func start() {
-        animation.duration = 3
+        let animation = CABasicAnimation(keyPath: "path")
+        animation.delegate = self
+        animation.duration = animationDuration
         animation.toValue = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: layer.bounds.width, height: layer.bounds.height), cornerRadius: layer.bounds.height/2.0).cgPath
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
         foregroundLayer.add(animation, forKey: "animation")
     }
 
@@ -137,10 +146,18 @@ class ItemView: UIView {
     }
 }
 
+extension ItemView: CAAnimationDelegate  {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if flag {
+            completionHandler?()
+        }
+    }
+}
+
 class ViewController: UIViewController {
 
     let rideauxImages = [#imageLiteral(resourceName: "rideau1"),#imageLiteral(resourceName: "rideau6"),#imageLiteral(resourceName: "rideau2"),#imageLiteral(resourceName: "rideau3"),#imageLiteral(resourceName: "rideau5"),#imageLiteral(resourceName: "rideau4"),#imageLiteral(resourceName: "rideau7")]
-    let progressView = ProgressContainerView(numberOfItems: 10, animationDuration: 1)
+    let progressView = ProgressContainerView(numberOfItems: 3, animationDuration: 5)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,13 +171,11 @@ class ViewController: UIViewController {
             progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             progressView.heightAnchor.constraint(equalToConstant: 4)
         ])
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         progressView.start()
-
     }
 }
