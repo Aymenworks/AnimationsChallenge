@@ -83,19 +83,10 @@ class ItemView: UIView {
 
         setupLayers: do {
 
-            backgroundLayer.strokeColor = UIColor.black.withAlphaComponent(0.5).cgColor
-            foregroundLayer.strokeColor = UIColor.white.cgColor
-//            backgroundLayer.fillColor = UIColor.black.withAlphaComponent(0.5).cgColor
-//            foregroundLayer.fillColor = UIColor.white.cgColor
+            backgroundColor = .clear
 
-//            backgroundLayer.lineWidth = 2
-//            foregroundLayer.lineWidth = 2
-
-            backgroundLayer.strokeStart = 0
-            backgroundLayer.strokeEnd = 1
-
-            foregroundLayer.strokeStart = 0
-            foregroundLayer.strokeEnd = 0.5
+            backgroundLayer.fillColor = UIColor.red.cgColor
+            foregroundLayer.fillColor = UIColor.yellow.cgColor
 
             layer.addSublayer(backgroundLayer)
             layer.addSublayer(foregroundLayer)
@@ -108,15 +99,22 @@ class ItemView: UIView {
 
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
-
-        backgroundLayer.path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.bounds.height / 2).cgPath
-        foregroundLayer.path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.bounds.height / 2).cgPath
-
-        print(layer.bounds)
+        
+        backgroundLayer.path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.bounds.height/2.0).cgPath
+        
+        // TODO:  Shima feedback -> check animation cost
+        let progress:  CGFloat = 0.1
+        foregroundLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: layer.bounds.width * progress, height: layer.bounds.height), cornerRadius: layer.bounds.height/2.0).cgPath
+        
+        // try
+        start()
     }
 
     func start() {
-
+        let animation = CABasicAnimation(keyPath: "path")
+        animation.duration = 3
+        animation.toValue = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: layer.bounds.width, height: layer.bounds.height), cornerRadius: layer.bounds.height/2.0).cgPath
+        foregroundLayer.add(animation, forKey: "animation")
     }
 
     func stop() {
