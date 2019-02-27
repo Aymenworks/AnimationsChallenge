@@ -16,8 +16,8 @@ class ProgressContainerView: UIStackView {
     }
 
     //  Current item index
-    var currentIndex = 0
-    
+    var currentIndex: Int = 0
+
     init(numberOfItems: Int, animationDuration: TimeInterval) {
 
         super.init(frame: .zero)
@@ -31,7 +31,13 @@ class ProgressContainerView: UIStackView {
         
         setupItems: do {
             for _ in 0..<numberOfItems {
-                self.addArrangedSubview(ItemView(animationDuration: animationDuration))
+                self.addArrangedSubview(
+                    ItemView(
+                        animationDuration: animationDuration,
+                        completionHandler: {
+                            self.next()
+                    })
+                )
             }
         }
     }
@@ -41,32 +47,38 @@ class ProgressContainerView: UIStackView {
     }
     
     private func setup() {
-        
     }
     
     func start() {
-
+        (arrangedSubviews[currentIndex] as? ItemView)?.start()
     }
 
     func stop() {
-
+        (arrangedSubviews[currentIndex] as? ItemView)?.stop()
     }
 
     func resume() {
+        (arrangedSubviews[currentIndex] as? ItemView)?.resume()
 
     }
 
     func next() {
-
+        currentIndex += 1
+        start()
     }
 
     func previous() {
-
+        currentIndex -= 1
+        start()
     }
 
 }
 
 class ItemView: UIView {
+
+    enum State {
+        case empty, progress, completed
+    }
 
     private var progress: Float = 0
 
@@ -76,7 +88,8 @@ class ItemView: UIView {
     // Duration for each bar item
     let animationDuration: TimeInterval
     
-    init(animationDuration: TimeInterval = 5) {
+    init(animationDuration: TimeInterval = 5, completionHandler: () -> ()) {
+
         self.animationDuration = animationDuration
 
         super.init(frame: .zero)
@@ -102,23 +115,21 @@ class ItemView: UIView {
         
         backgroundLayer.path = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.bounds.height/2.0).cgPath
         
-        // TODO:  Shima feedback -> check animation cost
         let progress:  CGFloat = 0.1
         foregroundLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: layer.bounds.width * progress, height: layer.bounds.height), cornerRadius: layer.bounds.height/2.0).cgPath
         
-        // try
-        start()
     }
 
+    let animation = CABasicAnimation(keyPath: "path")
+
     func start() {
-        let animation = CABasicAnimation(keyPath: "path")
         animation.duration = 3
         animation.toValue = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: layer.bounds.width, height: layer.bounds.height), cornerRadius: layer.bounds.height/2.0).cgPath
         foregroundLayer.add(animation, forKey: "animation")
     }
 
     func stop() {
-    
+
     }
 
     func resume() {
@@ -129,11 +140,11 @@ class ItemView: UIView {
 class ViewController: UIViewController {
 
     let rideauxImages = [#imageLiteral(resourceName: "rideau1"),#imageLiteral(resourceName: "rideau6"),#imageLiteral(resourceName: "rideau2"),#imageLiteral(resourceName: "rideau3"),#imageLiteral(resourceName: "rideau5"),#imageLiteral(resourceName: "rideau4"),#imageLiteral(resourceName: "rideau7")]
+    let progressView = ProgressContainerView(numberOfItems: 10, animationDuration: 1)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let progressView = ProgressContainerView(numberOfItems: 10, animationDuration: 1)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progressView)
         
@@ -143,5 +154,13 @@ class ViewController: UIViewController {
             progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             progressView.heightAnchor.constraint(equalToConstant: 4)
         ])
+
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        progressView.start()
+
     }
 }
