@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         let contentInset = collectionView.contentInset
         let contentSize = collectionView.contentSize
         let scrubberOffsetRange = collectionView.scrollIndicatorInsets.top ... (collectionView.frame.height - scrubberView.frame.height - collectionView.scrollIndicatorInsets.bottom)
-        let contentOffsetRange = contentInset.top ..< contentSize.height
+        let contentOffsetRange = contentInset.top ..< (contentSize.height-collectionView.frame.height)
 
         switch gesture.state {
             
