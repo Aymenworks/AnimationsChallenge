@@ -1,5 +1,8 @@
 # AnimationsChallenge
 
+https://medium.com/eureka-engineering/animations-challenges-1-bear-ios-search-animation-7ea5e4ea0a34
+https://medium.com/eureka-engineering/animations-challenges-2-asana-loader-animation-c3a6d040f358
+
 ## Bear Search
 
 Pair Challenge with [John](https://twitter.com/JohnEstropia)
