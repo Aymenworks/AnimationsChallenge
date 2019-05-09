@@ -5,9 +5,10 @@ Animations challenges is actually pretty fun. It’s about picking a random anim
 ## Bear Search
 
 Pair Challenge with [John](https://twitter.com/JohnEstropia)
-https://medium.com/eureka-engineering/animations-challenges-1-bear-ios-search-animation-7ea5e4ea0a34
 
 ![](ScrollToSearch/search-bear.gif)
+
+Medium article: https://medium.com/eureka-engineering/animations-challenges-1-bear-ios-search-animation-7ea5e4ea0a34
 
 ## Twitter-Like favorite button
 
@@ -21,7 +22,7 @@ Pair Challenge with [Shima](https://twitter.com/shima_1212 )
 
 ## Asana Loader View
 
-https://medium.com/eureka-engineering/animations-challenges-2-asana-loader-animation-c3a6d040f358
+Medium article: https://medium.com/eureka-engineering/animations-challenges-2-asana-loader-animation-c3a6d040f358
 
 ![](AsanaLoadingView/asana-loading-view.gif)
 
