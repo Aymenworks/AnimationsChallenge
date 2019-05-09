@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="376px" height="76px" viewBox="0 0 376 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Group 16</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="AvenirNext-Heavy, Avenir Next" font-weight="600" line-spacing="78">
+        <g id="Group-16" transform="translate(1.000000, -12.000000)">
+            <text id="Animations" font-size="50" letter-spacing="5.0999999">
+                <tspan x="0" y="50" fill="#4891E0">A</tspan>
+                <tspan x="43.8999999" y="50" fill="#000000">N</tspan>
+                <tspan x="88.5499998" y="50" fill="#FFD163">I</tspan>
+                <tspan x="112.25" y="50" fill="#4A4A4A">M</tspan>
+                <tspan x="167.75" y="50" fill="#8B572A">A</tspan>
+                <tspan x="208.65" y="50" fill="#F5A623">T</tspan>
+                <tspan x="243.749999" y="50" fill="#B8E986">I</tspan>
+                <tspan x="262.349999" y="50" fill="#FF8796">O</tspan>
+                <tspan x="305.099999" y="50" fill="#D01028">N</tspan>
+                <tspan x="344.649999" y="50" fill="#171717">S</tspan>
+            </text>
+            <text id="CHALLENGE" font-size="20" fill="#000000" text-decoration="underline">
+                <tspan x="0" y="81">CHALLENGE</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
