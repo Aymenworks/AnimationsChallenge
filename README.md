@@ -1,4 +1,4 @@
-# AnimationsChallenge
+![Animation Challenge](./AnimationChallenge.svg)
 
 Animations challenges is actually pretty fun. It’s about picking a random animation in one of the app that we use everyday ( twitter, Facebook, Slack, others .. ) and try to recreate it together by doing Pair Programming.
 
