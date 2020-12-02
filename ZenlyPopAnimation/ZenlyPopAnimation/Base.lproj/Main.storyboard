@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tKm-L9-S1i">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="6wj-Vs-wU4">
+            <objects>
+                <viewController id="tKm-L9-S1i" customClass="ViewController" customModule="ZenlyPopAnimation" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OPZ-Xa-NOr">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zenly" translatesAutoresizingMaskIntoConstraints="NO" id="Mvh-tB-dPr">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11 POPS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szA-SP-52X">
+                                <rect key="frame" x="24" y="76" width="366" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="28"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="41I-tN-f72">
+                                <rect key="frame" x="0.0" y="642" width="414" height="220"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="220" id="vmz-bg-1OD"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ihz-vx-2GL"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="szA-SP-52X" firstAttribute="leading" secondItem="ihz-vx-2GL" secondAttribute="leading" constant="24" id="0F5-Qh-xoU"/>
+                            <constraint firstItem="ihz-vx-2GL" firstAttribute="trailing" secondItem="Mvh-tB-dPr" secondAttribute="trailing" id="3sC-je-EuC"/>
+                            <constraint firstItem="ihz-vx-2GL" firstAttribute="bottom" secondItem="Mvh-tB-dPr" secondAttribute="bottom" id="7ZK-O0-MN4"/>
+                            <constraint firstItem="41I-tN-f72" firstAttribute="leading" secondItem="ihz-vx-2GL" secondAttribute="leading" id="Rle-AV-HZG"/>
+                            <constraint firstItem="ihz-vx-2GL" firstAttribute="bottom" secondItem="41I-tN-f72" secondAttribute="bottom" id="Y0O-XW-Auq"/>
+                            <constraint firstItem="szA-SP-52X" firstAttribute="top" secondItem="ihz-vx-2GL" secondAttribute="top" constant="32" id="ez2-VC-mZb"/>
+                            <constraint firstItem="Mvh-tB-dPr" firstAttribute="leading" secondItem="ihz-vx-2GL" secondAttribute="leading" id="fnz-ZM-XQN"/>
+                            <constraint firstItem="ihz-vx-2GL" firstAttribute="trailing" secondItem="41I-tN-f72" secondAttribute="trailing" id="hkw-HT-9Tc"/>
+                            <constraint firstAttribute="trailing" secondItem="szA-SP-52X" secondAttribute="trailing" constant="24" id="ovc-mL-3Cp"/>
+                            <constraint firstItem="Mvh-tB-dPr" firstAttribute="top" secondItem="OPZ-Xa-NOr" secondAttribute="top" id="yRE-KX-vKT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bottomView" destination="41I-tN-f72" id="PKy-Q5-kzC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bg2-ga-pbz" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="238" y="415"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="zenly" width="390" height="655"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
